@@ -6,7 +6,7 @@ class ofxImageSequencePlayer : public ofImage {
 public:
 	ofxImageSequencePlayer() {
 	};
-	void init(string prefix, int digits, string extension, int start) {
+	void init(std::string prefix, int digits, std::string extension, int start) {
 		curFrame = start;
 		startFrame = start;
 		fPrefix = prefix;
