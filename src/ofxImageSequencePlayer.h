@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofImage.h"
 
-class ofxImageSequencePlayer : public ofImage {
+class ofxImageSequencePlayer {
 public:
 	ofxImageSequencePlayer() {
 	};
@@ -12,7 +13,7 @@ public:
 		fPrefix = prefix;
 		fExt = extension;
 		numDigits = digits;
-		initialized = load(generateFullFilename());
+		initialized = image.load(generateFullFilename());
 
 		if (!initialized) {
 			ofLogWarning() << "ofxImageSequencePlayer: unable to load inital image in the sequence: " << generateFullFilename();
@@ -31,14 +32,14 @@ public:
 	};
 
 	bool loadNextFrame() {
-		bool worked = load(generateFullFilename());
+		bool worked = image.load(generateFullFilename());
 		if (worked)
 			curFrame++;
 		return worked;
 	};
 
 	bool loadPreviousFrame() {
-		bool worked = load(generateFullFilename());
+		bool worked = image.load(generateFullFilename());
 		if (worked)
 			curFrame = curFrame > 0 ? curFrame - 1 : 0;
 		return worked;
@@ -46,12 +47,18 @@ public:
 
 	bool loadFrame(int n) {
 		curFrame = startFrame + n;
-		bool worked = load(generateFullFilename());
+		bool worked = image.load(generateFullFilename());
 		if (worked)
 			curFrame++;
 		return worked;
 	};
 
+	int getWidth() { return image.getWidth(); }
+	int getHeight() { return image.getHeight(); }
+	void setImageType(int imageType) { image.setImageType((ofImageType)imageType); }
+	ofImageType getImageType() { return image.getImageType(); }
+	ofPixels getPixels() { return image.getPixels(); }
+	ofTexture getTexture() { return image.getTexture(); }
 	int getCurrentFrameNumber() { return curFrame - startFrame; }
 	void setCurrentFrameNumber(int i) { curFrame = startFrame + i; }
 	int getSequenceLength() { return totalFrames; }
@@ -66,6 +73,7 @@ public:
 		}
 		return fPrefix + ss.str() + fExt;
 	};
+	ofImage image;
 
 private:
 	bool initialized;
